@@ -40,3 +40,59 @@ locale-gen
 timedatectl --no-ask-password set-timezone Europe/Stockholm
 timedatectl --no-ask-password set-ntp 1
 localectl --no-ask-password set-locale LANG="en_US.UTF-8" LC_COLLATE="" LC_TIME="en_US.UTF-8"
+
+# Set keymaps
+localectl --no-ask-password set-keymap sv-latin1
+
+# Hostname
+hostnamectl --no-ask-password set-hostname $hostname
+
+# Add sudo no password rights
+sed -i 's/^# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
+
+#Add parallel downloading
+sed -i 's/^#Para/Para/' /etc/pacman.conf
+
+#Enable multilib
+cat <<EOF >> /etc/pacman.conf
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+EOF
+pacman -Syy --noconfirm
+
+echo -e "\nInstalling Base System\n"
+
+PKGS=(
+    'ark'
+    'autoconf'
+    'automake'
+    'base'
+    'biunutils'
+    'btrfs-progs'
+    'dhcpcd'
+    'dialog'
+    'dosfstools'
+    'efibootmgr'
+    'gcc'
+    'git'
+    'htop'
+    'nethogs'
+    'ncdu'
+    'linux'
+    'linux-lts'
+    'linux-firmware'
+    'linux-headers'
+    'neofetch'
+    'rsync'
+    'sudo'
+    'traceroute'
+    'ufw'
+    'zsh'
+    'zsh-syntax-highlighting'
+    'zsh-autosuggestions'
+)
+
+for PKG in "${PKGS[@]}"; do
+    echo "INSTALLING: ${PKG}"
+    sudo pacman -S "$PKG" --noconfirm --needed
+done
