@@ -67,7 +67,7 @@ y|Y|yes|Yes|YES)
 
 echo -e "\nMounting filesystems on ${MOUNTPOINT}"
 mount -t btrfs "${DISK}2" ${MOUNTPOINT}
-btrfs subvolume create /mnt/@
+btrfs subvolume create ${MOUNTPOINT}/@
 umount ${MOUNTPOINT}
 ;;
 esac
