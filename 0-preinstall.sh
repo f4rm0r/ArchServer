@@ -50,6 +50,8 @@ echo -e "\nCreating Filesystems...\n$HR"
 
 mkfs.vfat -F32 -n "UEFISYS" "${DISK}1"
 mkfs.btrfs -L "ROOT" "${DISK}2"
+;;
+esac
 
 echo "--------------------------------------------------"
 echo "-----------------Select mountpoint----------------"
