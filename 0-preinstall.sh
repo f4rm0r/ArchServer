@@ -78,4 +78,27 @@ mkdir -p ${MOUNTPOINT}/boot
 mkdir -p ${MOUNTPOINT}/boot/efi
 mount -t vfat "${DISK}1" ${MOUNTPOINT}/boot
 
+echo "--------------------------------------------------"
+echo "-------- Arch Install on Main Drive       --------"
+echo "--------------------------------------------------"
+pacstrap ${MOUNTPOINT}/ base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt --noconfirm --needed
+genfstab -U ${MOUNTPOINT} >> ${MOUNTPOINT}/etc/fstab
+echo "keyserver hkp://keyserver.ubuntu.com" >> /mnt/etc/pacman.d/gnupg/gpg.conf
+
+echo "--------------------------------------------------"
+echo "-------- Bootloader Systemd Installation ---------"
+echo "--------------------------------------------------"
+
+bootctl install --esp-path=${MOUNTPOINT}/boot
+[ ! -d "${MOUNTPOINT}/boot/loader/entries" ] && mkdir -p ${MOUNTPOINT}/boot/loader/entries
+cat <<EOF > ${MOUNTPOINT}/boot/loader/entries/arch.conf
+title Arch Linux
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+options root=${DISK}2 rw rootflags=subvol=@
 EOF
+cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
+
+echo "--------------------------------------------------"
+echo "----------   System ready for 1-setup   ----------"
+echo "--------------------------------------------------"
