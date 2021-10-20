@@ -78,3 +78,4 @@ mkdir -p ${MOUNTPOINT}/boot
 mkdir -p ${MOUNTPOINT}/boot/efi
 mount -t vfat "${DISK}1" ${MOUNTPOINT}/boot
 
+EOF
