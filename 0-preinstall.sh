@@ -10,7 +10,7 @@ pacman -S --noconfirm pacman-contrib reflector rsync
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 reflector -a 48 -c $countrycode -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 
-echo -e "\n Installing prerequisits...\n$HR"
+echo -e "\nInstalling prerequisits...\n$HR"
 pacman -S --noconfirm gptfdisk btrfs-progs
 
 echo "--------------------------------------------------"
