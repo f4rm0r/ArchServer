@@ -8,8 +8,7 @@ countrycode=$(curl -4 ifconfig.co/country.iso)
 timedatectl set-ntp true
 pacman -S --noconfirm pacman-contrib reflector rsync
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
-reflector -a 48 -c $countrycode -f 10 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
-mkdir /mnt
+reflector -a 48 -c $countrycode -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 
 echo -e "\n Installing prerequisits...\n$HR"
 pacman -S --noconfirm gptfdisk btrfs-progs
