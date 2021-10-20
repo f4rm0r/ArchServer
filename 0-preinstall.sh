@@ -65,6 +65,7 @@ case $mountpoint in
 
 y|Y|yes|Yes|YES)
 
+mkdir -p ${MOUNTPOINT}
 echo -e "\nMounting filesystems on ${MOUNTPOINT}"
 mount -t btrfs "${DISK}2" ${MOUNTPOINT}
 btrfs subvolume create ${MOUNTPOINT}/@
