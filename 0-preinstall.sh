@@ -4,7 +4,7 @@ echo "--------------------------------------------------"
 echo "Setting up country mirrors for optimal download   "
 echo "--------------------------------------------------"
 
-countrycode=$(curl -4 ifconfig.co/country.iso)
+countrycode=$(curl -4 ifconfig.co/country-iso)
 timedatectl set-ntp true
 pacman -S --noconfirm pacman-contrib reflector rsync
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
