@@ -100,6 +100,7 @@ linux /vmlinuz-linux
 initrd /initramfs-linux.img
 options root=${DISK}2 rw rootflags=subvol=@
 EOF
+cp -R ~/ArchMatic ${MOUNTPOINT}/
 cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 
 echo "--------------------------------------------------"
