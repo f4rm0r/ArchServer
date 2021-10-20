@@ -29,13 +29,13 @@ echo "--------------------------------------------------"
 echo -e "\nFormatting disk...\n$HR"
 echo "--------------------------------------------------"
 
-#disk prep
-sgdisk -Z ${DISK} # Zap all on disk
-sgdisk -a 2048 -o ${DISK} # New GPT table with 2048 alignment
+# disk prep
+sgdisk -Z ${DISK} # zap all on disk
+sgdisk -a 2048 -o ${DISK} # new gpt disk 2048 alignment
 
-# Create partitions
-sgdisk -n 1:0:+200M ${DISK} # Partition 1 (UEFI SYS), default stat block, 512MB
-sgdisk -n 2:0:0     ${DISK} # Partition 2 (Root), default start, remaining
+# create partitions
+sgdisk -n 1:0:+1000M ${DISK} # partition 1 (UEFI SYS), default start block, 512MB
+sgdisk -n 2:0:0     ${DISK} # partition 2 (Root), default start, remaining
 
 # set partition types
 sgdisk -t 1:ef00 ${DISK}
@@ -46,8 +46,7 @@ sgdisk -c 1:"UEFISYS" ${DISK}
 sgdisk -c 2:"ROOT" ${DISK}
 
 # make filesystems
-
-echo -e "\nCreating filesystems\n$HR"
+echo -e "\nCreating Filesystems...\n$HR"
 
 mkfs.vfat -F32 -n "UEFISYS" "${DISK}1"
 mkfs.btrfs -L "ROOT" "${DISK}2"
