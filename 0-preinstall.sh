@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+{
 echo "--------------------------------------------------"
 echo "Setting up country mirrors for optimal download   "
 echo "--------------------------------------------------"
@@ -104,3 +105,4 @@ cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 echo "--------------------------------------------------"
 echo "----------   System ready for 1-setup   ----------"
 echo "--------------------------------------------------"
+} 2>&1 | tee logfile.txt
