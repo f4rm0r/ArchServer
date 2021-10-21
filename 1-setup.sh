@@ -61,7 +61,6 @@ pacman -Syy --noconfirm
 echo -e "\nInstalling Base System\n"
 
 PKGS=(
-    'ark'
     'autoconf'
     'automake'
     'base'
