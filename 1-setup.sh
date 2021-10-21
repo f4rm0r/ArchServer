@@ -127,7 +127,7 @@ git clone "https://github.com/ChrisTitusTech/zsh"
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/powerlevel10k
 ln -s "$HOME/zsh/.zshrc" $HOME/.zshrc
 
-PKGS=(
+PKGSA=(
     'nerd-fonts-fira-code'
     'timeshift-bin'
     'ttf-meslo'
@@ -138,3 +138,4 @@ PKGS=(
     done
 
 } 2>&1 | tee logfile_1-setup.txt
+~/ArchServer/2-AUR
