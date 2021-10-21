@@ -1,0 +1,9 @@
+PKGS=(
+    'nerd-fonts-fira-code'
+    'timeshift-bin'
+    'ttf-meslo'
+    )
+
+    for PKG in "${PKG[@]}"; do
+        yay -S --noconfirm $PKG
+    done
