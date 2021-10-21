@@ -113,8 +113,8 @@ case "$proc_type" in
 		pacman -S --noconfirm amd-ucode
 		proc_ucode=amd-ucode.img
 		;;
-
-        echo -e "\nDone!\n"
+esac
+echo -e "\nDone!\n"
 
 
         if [ $(whoami) = "root"  ];
