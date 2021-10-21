@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+{
 
 echo "--------------------------------------"
 echo "--           Network Setup          --"
@@ -133,3 +134,5 @@ then
 else
 	echo "You are already a user proceed with aur installs"
 fi
+
+} 2>&1 | tee logfile_1-setup.txt
