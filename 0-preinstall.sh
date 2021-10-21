@@ -107,8 +107,6 @@ cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 read -p "Please enter username:" username
 
 
-        if [ $(whoami) = "root"  ];
-then
     [ ! -d "/home/$username" ] && useradd -m -g users -G wheel -s /bin/bash $username 
     cp -R ~/ArchServer /home/$username/
     echo "--------------------------------------"
