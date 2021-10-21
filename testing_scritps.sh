@@ -3,7 +3,7 @@ read -p "Please enter username:" username
 
 echo -e "$username"
 
-useradd -m -g users -G wheel -s /bin/bash $username
+arch-chroot /mnt/ArchServer sh useradd -m -g users -G wheel -s /bin/bash $username
 cp -R ~/ArchServer /home/$username/
 
     echo "--------------------------------------"
