@@ -103,11 +103,8 @@ EOF
 cp -R ~/ArchServer ${MOUNTPOINT}/
 cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 
-if ! source install.conf; then
-    read -p "Please enter username:" username
-    echo "username=$username" >> ~/ArchServer/install.conf
-    echo "password=$password" >> ~/ArchServer/install.conf
-fi
+
+read -p "Please enter username:" username
 
 
         if [ $(whoami) = "root"  ];
