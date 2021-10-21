@@ -132,7 +132,7 @@ echo "--------------------------------------------------"
 echo "----------   System ready for 1-setup   ----------"
 echo "--------------------------------------------------"
 
-echo -e "\nRemember to SU into correct user!\n"
+echo -e "\nRemember to su into correct user!\n"
 arch-chroot ${MOUNTPOINT}
 
 } 2>&1 | tee logfile.txt
