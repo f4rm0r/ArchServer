@@ -96,3 +96,40 @@ for PKG in "${PKGS[@]}"; do
     echo "INSTALLING: ${PKG}"
     sudo pacman -S "$PKG" --noconfirm --needed
 done
+
+#
+# determine processor type and install microcode
+# 
+proc_type=$(lscpu | awk '/Vendor ID:/ {print $3}')
+case "$proc_type" in
+	GenuineIntel)
+		print "Installing Intel microcode"
+		pacman -S --noconfirm intel-ucode
+		proc_ucode=intel-ucode.img
+		;;
+	AuthenticAMD)
+		print "Installing AMD microcode"
+		pacman -S --noconfirm amd-ucode
+		proc_ucode=amd-ucode.img
+		;;
+
+        echo -e "\nDone!\n"
+
+
+        if [ $(whoami) = "root"  ];
+then
+    [ ! -d "/home/$username" ] && useradd -m -g users -G wheel -s /bin/bash $username 
+    cp -R /root/ArchMatic /home/$username/
+    echo "--------------------------------------"
+    echo "--      Set Password for $username  --"
+    echo "--------------------------------------"
+    echo "Enter password for $username user: "
+    passwd $username
+    cp /etc/skel/.bash_profile /home/$username/
+    cp /etc/skel/.bash_logout /home/$username/
+    cp /etc/skel/.bashrc /home/$username/.bashrc
+    chown -R $username: /home/$username
+    sed -n '#/home/'"$username"'/#,s#bash#zsh#' /etc/passwd
+else
+	echo "You are already a user proceed with aur installs"
+fi
