@@ -132,7 +132,37 @@ then
     chown -R $username: /home/$username
     sed -n '#/home/'"$username"'/#,s#bash#zsh#' /etc/passwd
 else
-	echo "You are already a user proceed with aur installs"
+	echo "You are already a user proceeding with aur installs"
 fi
+
+echo -p "Do you want to install AUR programs (Y/N):" aurinstall
+case $aurinstall in
+
+y|Y|yes|Yes|YES)
+
+echo -e "\nINSTALLING AUR SOFTWARE\n"
+
+echo "CLONING YAY"
+cd ~
+git clone "https://aur.archlinux.org/yay.git"
+cd ${HOME}/yay
+makepkg -si --noconfirm
+cd ~
+touch "$HOME/.cache/zshhistory"
+git clone "https://github.com/ChrisTitusTech/zsh"
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/powerlevel10k
+ln -s "$HOME/zsh/.zshrc" $HOME/.zshrc
+
+PKGS=(
+    'nerd-fonts-fira-code'
+    'timeshift-bin'
+    'ttf-meslo'
+    )
+
+    for PKG in "${PKG[@]}"; do
+        yay -S --noconfirm $PKG
+    done
+;;
+esac
 
 } 2>&1 | tee logfile_1-setup.txt
