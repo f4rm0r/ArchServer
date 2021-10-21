@@ -120,7 +120,7 @@ echo -e "\nDone!\n"
         if [ $(whoami) = "root"  ];
 then
     [ ! -d "/home/$username" ] && useradd -m -g users -G wheel -s /bin/bash $username 
-    cp -R /root/ArchMatic /home/$username/
+    cp -R /ArchServer /home/$username/
     echo "--------------------------------------"
     echo "--      Set Password for $username  --"
     echo "--------------------------------------"
@@ -134,11 +134,6 @@ then
 else
 	echo "You are already a user proceeding with aur installs"
 fi
-
-echo -p "Do you want to install AUR programs (Y/N):" aurinstall
-case $aurinstall in
-
-y|Y|yes|Yes|YES)
 
 echo -e "\nINSTALLING AUR SOFTWARE\n"
 
@@ -162,7 +157,5 @@ PKGS=(
     for PKG in "${PKG[@]}"; do
         yay -S --noconfirm $PKG
     done
-;;
-esac
 
 } 2>&1 | tee logfile_1-setup.txt
