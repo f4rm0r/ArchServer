@@ -105,8 +105,8 @@ cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 
 if ! source install.conf; then
     read -p "Please enter username:" username
-    echo "username=$username" >> /ArchServer/install.conf
-    echo "password=$password" >> /ArchServer/install.conf
+    echo "username=$username" >> ~/ArchServer/install.conf
+    echo "password=$password" >> ~/ArchServer/install.conf
 fi
 
 
@@ -131,6 +131,6 @@ fi
 echo "--------------------------------------------------"
 echo "----------   System ready for 1-setup   ----------"
 echo "--------------------------------------------------"
-} 2>&1 | tee logfile.txt
-
 arch-chroot ${MOUNTPOINT}
+
+} 2>&1 | tee logfile.txt
