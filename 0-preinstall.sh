@@ -119,7 +119,7 @@ cp -R ~/ArchServer /home/$username/
     cp /etc/skel/.bash_logout /home/$username/
     cp /etc/skel/.bashrc /home/$username/.bashrc
     chown -R $username: /home/$username
-    sed -n '#/home/'"$username"'/#,s#bash#zsh#' /etc/passwd
+#    sed -n '#/home/'"$username"'/#,s#bash#zsh#' /etc/passwd
 
 
 echo "--------------------------------------------------"
