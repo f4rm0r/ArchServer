@@ -113,7 +113,7 @@ fi
         if [ $(whoami) = "root"  ];
 then
     [ ! -d "/home/$username" ] && useradd -m -g users -G wheel -s /bin/bash $username 
-    cp -R /ArchServer /home/$username/
+    cp -R ~/ArchServer /home/$username/
     echo "--------------------------------------"
     echo "--      Set Password for $username  --"
     echo "--------------------------------------"
@@ -131,6 +131,8 @@ fi
 echo "--------------------------------------------------"
 echo "----------   System ready for 1-setup   ----------"
 echo "--------------------------------------------------"
+
+echo -e "\nRemember to SU into correct user!\n"
 arch-chroot ${MOUNTPOINT}
 
 } 2>&1 | tee logfile.txt
