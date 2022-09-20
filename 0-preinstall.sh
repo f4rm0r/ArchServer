@@ -116,7 +116,7 @@ cp -R ~/ArchServer /home/$username/
 
 echo "--------------------------------------------------"
 echo "----------   System ready for 1-setup   ----------"
-echo "--------------------------------------------------
+echo "--------------------------------------------------"
 
 cp ~/ArchServer/1-setup.sh $MOUNTPOINT/home/$username/1-setup.sh
 
