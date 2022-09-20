@@ -74,7 +74,7 @@ umount ${MOUNTPOINT}
 ;;
 esac
 
-#mount targe
+#mount target
 mount -t btrfs -o subvol=@ "${DISK}2" ${MOUNTPOINT}
 rm -r ${MOUNTPOINT}/*
 mkdir -p ${MOUNTPOINT}/boot
@@ -84,7 +84,7 @@ mount -t vfat "${DISK}1" ${MOUNTPOINT}/boot
 echo "--------------------------------------------------"
 echo "-------- Arch Install on Main Drive       --------"
 echo "--------------------------------------------------"
-pacstrap ${MOUNTPOINT}/ base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt --noconfirm --needed
+pacstrap ${MOUNTPOINT}/ base base-devel linux linux-firmware vim grub nano sudo archlinux-keyring wget libnewt --noconfirm --needed
 genfstab -U ${MOUNTPOINT} >> ${MOUNTPOINT}/etc/fstab
 echo "keyserver hkp://keyserver.ubuntu.com" >> /mnt/etc/pacman.d/gnupg/gpg.conf
 
@@ -92,15 +92,7 @@ echo "--------------------------------------------------"
 echo "-------- Bootloader Systemd Installation ---------"
 echo "--------------------------------------------------"
 
-bootctl install --esp-path=${MOUNTPOINT}/boot
-[ ! -d "${MOUNTPOINT}/boot/loader/entries" ] && mkdir -p ${MOUNTPOINT}/boot/loader/entries
-cat <<EOF > ${MOUNTPOINT}/boot/loader/entries/arch.conf
-title Arch Linux
-linux /vmlinuz-linux
-initrd /initramfs-linux.img
-options root=${DISK}2 rw rootflags=subvol=@
-EOF
-cp -R ~/ArchServer ${MOUNTPOINT}/
+
 cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 
 
@@ -124,9 +116,10 @@ cp -R ~/ArchServer /home/$username/
 
 echo "--------------------------------------------------"
 echo "----------   System ready for 1-setup   ----------"
-echo "--------------------------------------------------"
+echo "--------------------------------------------------
 
-echo -e "\nRemember to su into correct user!\n"
-arch-chroot ${MOUNTPOINT}
+cp ~/ArchServer/1-setup.sh $MOUNTPOINT/home/$username/1-setup.sh
+
+arch-chroot $MOUNTPOINT /home/$username/1-setup.sh
 
 } 2>&1 | tee logfile.txt
