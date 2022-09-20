@@ -31,7 +31,7 @@ echo -e "\nFormatting disk...\n$HR"
 echo "--------------------------------------------------"
 
 # disk prep
-sgdisk -Z ${DISK} # zap all on disk
+sgdisk --zap-all --clear ${DISK} # zap all on disk
 sgdisk -a 2048 -o ${DISK} # new gpt disk 2048 alignment
 
 # create partitions
@@ -45,6 +45,7 @@ sgdisk -t 2:8300 ${DISK}
 # label partitions
 sgdisk -c 1:"UEFISYS" ${DISK}
 sgdisk -c 2:"ROOT" ${DISK}
+wipefs -a -t btrfs ${DISK}2 # removes all of the btrfs signatures and wipe partition clean 
 
 # make filesystems
 echo -e "\nCreating Filesystems...\n$HR"
@@ -89,9 +90,10 @@ genfstab -U ${MOUNTPOINT} >> ${MOUNTPOINT}/etc/fstab
 echo "keyserver hkp://keyserver.ubuntu.com" >> /mnt/etc/pacman.d/gnupg/gpg.conf
 
 echo "--------------------------------------------------"
-echo "-------- Bootloader Systemd Installation ---------"
+echo "--------   Bootloader GRUB Installation  ---------"
 echo "--------------------------------------------------"
 
+grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
 
 cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 
@@ -99,9 +101,6 @@ cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 echo "--------------------------------------------------"
 echo "----------   System ready for 1-setup   ----------"
 echo "--------------------------------------------------"
-
-mkdir -p $MOUNTPOINT/home/$username/
-cp ~/ArchServer/1-setup.sh $MOUNTPOINT/home/$username/1-setup.sh
 
 arch-chroot $MOUNTPOINT /home/$username/1-setup.sh
 
