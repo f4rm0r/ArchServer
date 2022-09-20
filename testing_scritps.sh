@@ -1,3 +1,3 @@
-cat << EOF | sudo arch-chroot chroot
+cat << EOF | sudo arch-chroot /mnt
 ls /
 EOF
