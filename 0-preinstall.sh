@@ -100,6 +100,7 @@ echo "--------------------------------------------------"
 echo "----------   System ready for 1-setup   ----------"
 echo "--------------------------------------------------"
 
+mkdir -p $MOUNTPOINT/home/$username/
 cp ~/ArchServer/1-setup.sh $MOUNTPOINT/home/$username/1-setup.sh
 
 arch-chroot $MOUNTPOINT /home/$username/1-setup.sh
