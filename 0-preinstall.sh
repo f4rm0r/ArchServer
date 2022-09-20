@@ -93,15 +93,36 @@ echo "--------------------------------------------------"
 echo "--------   Bootloader GRUB Installation  ---------"
 echo "--------------------------------------------------"
 
+cat << EOF | sudo arch-chroot /mnt
+
 grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
 
 cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 
 
-echo "--------------------------------------------------"
-echo "----------   System ready for 1-setup   ----------"
-echo "--------------------------------------------------"
+    echo "--------------------------------------"
+    echo "--       Set username for user      --"
+    echo "--------------------------------------"
 
-arch-chroot $MOUNTPOINT /home/$username/1-setup.sh
+read -p "Please enter username:" username
+useradd -m -g users -G wheel -s /bin/bash $username
+
+cp -R ~/ArchServer /home/$username/
+
+    echo "--------------------------------------"
+    echo "--      Set Password for $username  --"
+    echo "--------------------------------------"
+    echo "Enter password for $username user: "
+    passwd $username
+    cp /etc/skel/.bash_profile /home/$username/
+    cp /etc/skel/.bash_logout /home/$username/
+    cp /etc/skel/.bashrc /home/$username/.bashrc
+    chown -R $username: /home/$username
+#    sed -n '#/home/'"$username"'/#,s#bash#zsh#' /etc/passwd
+
+ls /
+EOF
+
+#arch-chroot $MOUNTPOINT /home/$username/1-setup.sh
 
 } 2>&1 | tee logfile.txt
