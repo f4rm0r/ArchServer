@@ -2,7 +2,7 @@
 
 {
 echo "--------------------------------------------------"
-echo "Setting up country mirrors for optimal download   "
+echo " Setting up country mirrors for optimal download  "
 echo "--------------------------------------------------"
 
 iso=$(curl -4 ifconfig.co/country-iso)
@@ -41,6 +41,7 @@ sgdisk -n 2:0:0     ${DISK} # partition 2 (Root), default start, remaining
 # set partition types
 sgdisk -t 1:ef00 ${DISK}
 sgdisk -t 2:8300 ${DISK}
+
 
 # label partitions
 sgdisk -c 1:"UEFISYS" ${DISK}
@@ -90,34 +91,47 @@ genfstab -U ${MOUNTPOINT} >> ${MOUNTPOINT}/etc/fstab
 echo "keyserver hkp://keyserver.ubuntu.com" >> /mnt/etc/pacman.d/gnupg/gpg.conf
 
 echo "--------------------------------------------------"
-echo "--------   Bootloader GRUB Installation  ---------"
+echo "---  Setting key variables used during chroot  ---"
 echo "--------------------------------------------------"
+
+# Sets username variable and puts it in to a tempfile.
+echo "--------------------------------------"
+echo "--       Set username for user      --"
+echo "--------------------------------------"
+read -p "Please enter username:" username
+echo $username >> /mnt/tempvars
+
+# Sets password variable and puts it in to a tempfile.
+echo "--------------------------------------"
+echo "--    Set Password for $username    --"
+echo "--------------------------------------"
+read -p "Enter password for $username" password
+echo $password >> /mnt/tempvars
+
+clear
+
+#copy mirrorlist to new installation before chroot
+cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 
 cat << EOF | sudo arch-chroot /mnt
 
+echo "--------------------------------------------------"
+echo "--------   Bootloader GRUB Installation  ---------"
+echo "--------------------------------------------------"
+
 grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
 
-cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
-
-
-    echo "--------------------------------------"
-    echo "--       Set username for user      --"
-    echo "--------------------------------------"
-
-read -p "Please enter username:" username
+echo "---------------------------------------"
+echo "------  setting up user account  ------"
+echo "---------------------------------------"
 useradd -m -g users -G wheel -s /bin/bash $username
-
 cp -R ~/ArchServer /home/$username/
 
-    echo "--------------------------------------"
-    echo "--      Set Password for $username  --"
-    echo "--------------------------------------"
-    echo "Enter password for $username user: "
-    passwd $username
-    cp /etc/skel/.bash_profile /home/$username/
-    cp /etc/skel/.bash_logout /home/$username/
-    cp /etc/skel/.bashrc /home/$username/.bashrc
-    chown -R $username: /home/$username
+passwd $username
+cp /etc/skel/.bash_profile /home/$username/
+cp /etc/skel/.bash_logout /home/$username/
+cp /etc/skel/.bashrc /home/$username/.bashrc
+chown -R $username: /home/$username
 #    sed -n '#/home/'"$username"'/#,s#bash#zsh#' /etc/passwd
 
 ls /
