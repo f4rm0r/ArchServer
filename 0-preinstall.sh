@@ -7,12 +7,12 @@ echo "--------------------------------------------------"
 
 iso=$(curl -4 ifconfig.co/country-iso)
 timedatectl set-ntp true
-pacman -S --noconfirm pacman-contrib reflector rsync
+pacman -S --noconfirm pacman-contrib reflector rsync archlinux-keyring
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 reflector -a 48 -c $iso -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 
 echo -e "\nInstalling prereqs...\n$HR"
-pacman -S --noconfirm gptfdisk btrfs-progs archlinux-keyring
+pacman -S --noconfirm gptfdisk btrfs-progs
 
 echo "--------------------------------------------------"
 echo "--------    Select your disk to format    --------"
