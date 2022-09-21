@@ -86,7 +86,7 @@ mount -t vfat "${DISK}1" ${MOUNTPOINT}/boot
 echo "--------------------------------------------------"
 echo "-------- Arch Install on Main Drive       --------"
 echo "--------------------------------------------------"
-pacstrap ${MOUNTPOINT}/ base base-devel linux linux-firmware vim grub nano sudo archlinux-keyring wget libnewt --noconfirm --needed
+pacstrap ${MOUNTPOINT}/ base base-devel linux linux-firmware vim grub nano sudo archlinux-keyring wget efibootmgr libnewt --noconfirm --needed
 genfstab -U ${MOUNTPOINT} >> ${MOUNTPOINT}/etc/fstab
 echo "keyserver hkp://keyserver.ubuntu.com" >> /mnt/etc/pacman.d/gnupg/gpg.conf
 
