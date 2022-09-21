@@ -106,14 +106,14 @@ clear
 echo "--------------------------------------"
 echo "--    Set Password for $username    --"
 echo "--------------------------------------"
-read -p "Enter password for $username" password
+read -p "Enter password for $username:" password
 echo password=$password >> /mnt/tempvars
 clear
 
 echo "--------------------------------------"
 echo "-----   Set Password for root    -----"
 echo "--------------------------------------"
-read -p "Enter password for root" rootpw
+read -p "Enter password for root:" rootpw
 echo rootpw=$rootpw >> /mnt/tempvars
 clear
 
@@ -182,10 +182,9 @@ hostnamectl --no-ask-password set-hostname $hostname
 #Add parallel downloading
 sed -i 's/^#Para/Para/' /etc/pacman.conf
 
-cat <<EOF >> /etc/pacman.conf
-[multilib]
-Include = /etc/pacman.d/mirrorlist
-EOF
+# Activates multilib
+echo "[multilib]" >> /etc/pacman.conf
+echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 pacman -Syy --noconfirm
 
 echo -e "\nInstalling Base System\n"
