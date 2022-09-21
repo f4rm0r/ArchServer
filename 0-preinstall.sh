@@ -94,14 +94,13 @@ echo "--------------------------------------------------"
 echo "---  Setting key variables used during chroot  ---"
 echo "--------------------------------------------------"
 
-echo MOUNTPOINT=$MOUNTPOINT >> /mnt/tempvars
-
 # Sets username variable and puts it in to a tempfile.
 echo "--------------------------------------"
 echo "--       Set username for user      --"
 echo "--------------------------------------"
 read -p "Please enter username:" username
 echo username=$username >> /mnt/tempvars
+clear
 
 # Sets password variable and puts it in to a tempfile.
 echo "--------------------------------------"
@@ -109,18 +108,21 @@ echo "--    Set Password for $username    --"
 echo "--------------------------------------"
 read -p "Enter password for $username" password
 echo password=$password >> /mnt/tempvars
+clear
 
 echo "--------------------------------------"
 echo "-----   Set Password for root    -----"
 echo "--------------------------------------"
 read -p "Enter password for root" rootpw
 echo rootpw=$rootpw >> /mnt/tempvars
+clear
 
 echo "--------------------------------------"
 echo "---------  Set hostname  -------------"
 echo "--------------------------------------"
 read -p "Please enter hostname:" hostname
 echo hostname=$hostname >> /mnt/tempvars
+clear
 
 #copy mirrorlist to new installation before chroot
 cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
@@ -141,8 +143,7 @@ echo "---------------------------------------"
 useradd -m -g users -G wheel -s /bin/bash $username
 cp -R ~/ArchServer /home/$username/
 
-echo -e "$password\n$password | passwd $username
-
+echo -e "$password\n$password" | passwd $username
 
 echo "--------------------------------------"
 echo "--           Network Setup          --"
@@ -160,7 +161,7 @@ chown -R $username: /home/$username
 echo "--------------------------------------"
 echo "--    Setting Password for Root     --"
 echo "--------------------------------------"
-echo -e "$rootpw\n$rootpw | passwd root
+echo -e "$rootpw\n$rootpw" | passwd root
 
 EOF
 
