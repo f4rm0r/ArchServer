@@ -12,7 +12,7 @@ mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 reflector -a 48 -c $iso -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 
 echo -e "\nInstalling prereqs...\n$HR"
-pacman -S --noconfirm gptfdisk btrfs-progs
+pacman -S --noconfirm gptfdisk btrfs-progs archlinux-keyring
 
 echo "--------------------------------------------------"
 echo "--------    Select your disk to format    --------"
@@ -125,7 +125,7 @@ echo hostname=$hostname >> /mnt/tempvars
 #copy mirrorlist to new installation before chroot
 cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 
-cat << EOF | sudo arch-chroot /mnt
+cat << EOF | sudo arch-chroot /mnt /bin/bash
 
 source /tempvars
 
