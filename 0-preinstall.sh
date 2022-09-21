@@ -94,32 +94,46 @@ echo "--------------------------------------------------"
 echo "---  Setting key variables used during chroot  ---"
 echo "--------------------------------------------------"
 
+echo MOUNTPOINT=$MOUNTPOINT >> /mnt/tempvars
+
 # Sets username variable and puts it in to a tempfile.
 echo "--------------------------------------"
 echo "--       Set username for user      --"
 echo "--------------------------------------"
 read -p "Please enter username:" username
-echo $username >> /mnt/tempvars
+echo username=$username >> /mnt/tempvars
 
 # Sets password variable and puts it in to a tempfile.
 echo "--------------------------------------"
 echo "--    Set Password for $username    --"
 echo "--------------------------------------"
 read -p "Enter password for $username" password
-echo $password >> /mnt/tempvars
+echo password=$password >> /mnt/tempvars
 
-clear
+echo "--------------------------------------"
+echo "-----   Set Password for root    -----"
+echo "--------------------------------------"
+read -p "Enter password for root" rootpw
+echo rootpw=$rootpw >> /mnt/tempvars
+
+echo "--------------------------------------"
+echo "---------  Set hostname  -------------"
+echo "--------------------------------------"
+read -p "Please enter hostname:" hostname
+echo hostname=$hostname >> /mnt/tempvars
 
 #copy mirrorlist to new installation before chroot
 cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 
 cat << EOF | sudo arch-chroot /mnt
 
+source /tempvars
+
 echo "--------------------------------------------------"
 echo "--------   Bootloader GRUB Installation  ---------"
 echo "--------------------------------------------------"
 
-grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
+grub-install --target=x86_64-efi --efi-directory=${MOUNTPOINT}/boot/efi --bootloader-id=ArchServer
 
 echo "---------------------------------------"
 echo "------  setting up user account  ------"
@@ -127,14 +141,27 @@ echo "---------------------------------------"
 useradd -m -g users -G wheel -s /bin/bash $username
 cp -R ~/ArchServer /home/$username/
 
-passwd $username
+echo -e "$password\n$password | passwd $username
+
+
+echo "--------------------------------------"
+echo "--           Network Setup          --"
+echo "--------------------------------------"
+pacman -S networkmanager dhclient --noconfirm --needed
+systemctl enable --now NetworkManager
+
+
 cp /etc/skel/.bash_profile /home/$username/
 cp /etc/skel/.bash_logout /home/$username/
 cp /etc/skel/.bashrc /home/$username/.bashrc
 chown -R $username: /home/$username
 #    sed -n '#/home/'"$username"'/#,s#bash#zsh#' /etc/passwd
 
-ls /
+echo "--------------------------------------"
+echo "--    Setting Password for Root     --"
+echo "--------------------------------------"
+echo -e "$rootpw\n$rootpw | passwd root
+
 EOF
 
 #arch-chroot $MOUNTPOINT /home/$username/1-setup.sh
