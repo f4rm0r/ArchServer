@@ -1,3 +1,5 @@
+cat << EOF | sudo arch-chroot /mnt /bin/bash
+
 nc=$(grep -c ^processor /proc/cpuinfo)
 echo "You have " $nc" cores."
 echo "-----------------------------------------"
@@ -51,3 +53,6 @@ for PKG in "${PKGS[@]}"; do
     echo "INSTALLING: ${PKG}"
     sudo pacman -S "$PKG" --noconfirm --needed
 done
+
+echo -e "\nDone!\n"
+EOF
