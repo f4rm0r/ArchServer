@@ -49,7 +49,7 @@ PKGS=(
     'traceroute'
     'ufw'
 )
-for PKG in "${PKGS[*]}"; do
+for PKGS in "${PKGS[*]}"; do
     echo "INSTALLING: ${PKG}"
     sudo pacman -S "$PKG" --noconfirm --needed
 done
