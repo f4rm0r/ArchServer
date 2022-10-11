@@ -17,10 +17,6 @@ hostnamectl --no-ask-password set-hostname $hostname
 #Add parallel downloading
 sed -i 's/^#Para/Para/' /etc/pacman.conf
 
-# Activates multilib
-echo "[multilib]" >> /etc/pacman.conf
-echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
-
 pacman -Syy --noconfirm
 
 echo -e "\nInstalling Base System\n"
