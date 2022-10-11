@@ -46,8 +46,8 @@ PKGS=(
     'ufw'
 )
 for PKGS in "${PKGS[*]}"; do
-    echo "INSTALLING: ${PKG}"
-    sudo pacman -S "$PKG" --noconfirm --needed
+    echo "INSTALLING: ${PKGS}"
+    sudo pacman -S "$PKGS" --noconfirm --needed
 done
 
 echo -e "\nDone!\n"
