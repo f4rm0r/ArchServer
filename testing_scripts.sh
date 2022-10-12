@@ -1,5 +1,3 @@
-cat << EOF | sudo arch-chroot /mnt /bin/bash
-
 echo -e "\nInstalling Base System\n"
 PKG=(
     'autoconf'
@@ -32,4 +30,3 @@ for PKG in "${PKG[*]}"; do
 done
 
 echo -e "\nDone!\n"
-EOF
