@@ -190,36 +190,9 @@ pacman -Syy --noconfirm
 
 echo -e "\nInstalling Base System\n"
 
-PKGS=(
-    'autoconf'
-    'automake'
-    'base'
-    'biunutils'
-    'btrfs-progs'
-    'dhcpcd'
-    'dialog'
-    'dosfstools'
-    'efibootmgr'
-    'gcc'
-    'git'
-    'htop'
-    'nethogs'
-    'ncdu'
-    'linux'
-    'linux-lts'
-    'linux-firmware'
-    'linux-headers'
-    'neofetch'
-    'rsync'
-    'sudo'
-    'traceroute'
-    'ufw'
-)
+chmod +x /testing_scripts.sh
+/testing_scripts.sh
 
-for PKG in "${PKGS[@]}"; do
-    echo "INSTALLING: ${PKG}"
-    sudo pacman -S "$PKG" --noconfirm --needed
-done
 
 #
 # determine processor type and install microcode
@@ -240,6 +213,13 @@ esac
 echo -e "\nDone!\n"
 
 EOF
+
+#echo "-----------------------------------------------"
+#echo "--------- calling the clean up crew -----------"
+#echo "-----------------------------------------------"
+
+#rm /mnt/testing_scripts
+#rm /mnt/tempvars
 
 #arch-chroot $MOUNTPOINT /home/$username/1-setup.sh
 
