@@ -126,7 +126,7 @@ clear
 
 #copy mirrorlist and install scriptto new installation before chroot
 cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
-cp /root/ArchServer/testing_scripts ${MOUNTPOINT}/testing_scripts
+cp /root/ArchServer/testing_scripts ${MOUNTPOINT}/testing_scripts.sh
 
 cat << EOF | sudo arch-chroot /mnt /bin/bash
 
