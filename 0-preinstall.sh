@@ -124,7 +124,7 @@ read -p "Please enter hostname:" hostname
 echo hostname=$hostname >> /mnt/tempvars
 clear
 
-#copy mirrorlist to new installation before chroot
+#copy mirrorlist and install scriptto new installation before chroot
 cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
 
 cat << EOF | sudo arch-chroot /mnt /bin/bash
