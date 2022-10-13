@@ -86,7 +86,7 @@ mount -t vfat "${DISK}1" ${MOUNTPOINT}/boot
 echo "--------------------------------------------------"
 echo "-------- Arch Install on Main Drive       --------"
 echo "--------------------------------------------------"
-pacstrap ${MOUNTPOINT}/ base base-devel linux linux-firmware vim grub nano sudo archlinux-keyring wget efibootmgr libnewt --noconfirm --needed
+pacstrap ${MOUNTPOINT}/ archlinux-keyring autoconf automake base base-devel biunutils btrfs-progs dhcpcd dialog dosfstools efibootmgr gcc git grub htop libnewt linux linux-lts linux-firmware linux-headers nethogs ncdu nano rsync sudo traceroute ufw vim wget --noconfirm --needed
 genfstab -U ${MOUNTPOINT} >> ${MOUNTPOINT}/etc/fstab
 echo "keyserver hkp://keyserver.ubuntu.com" >> /mnt/etc/pacman.d/gnupg/gpg.conf
 
@@ -126,7 +126,7 @@ clear
 
 #copy mirrorlist and install scriptto new installation before chroot
 cp /etc/pacman.d/mirrorlist ${MOUNTPOINT}/etc/pacman.d/mirrorlist
-cp /root/ArchServer/testing_scripts.sh ${MOUNTPOINT}/testing_scripts.sh
+#cp /root/ArchServer/testing_scripts.sh ${MOUNTPOINT}/testing_scripts.sh
 
 cat << EOF | sudo arch-chroot /mnt /bin/bash
 
@@ -181,7 +181,7 @@ localectl --no-ask-password set-keymap sv-latin1
 # Hostname
 hostnamectl --no-ask-password set-hostname $hostname
 
-#Add parallel downloading
+# Add parallel downloading
 sed -i 's/^#Para/Para/' /etc/pacman.conf
 
 # Activates multilib
@@ -192,7 +192,7 @@ pacman -Syy --noconfirm
 echo -e "\nInstalling Base System\n"
 
 chmod +x /testing_scripts.sh
-/testing_scripts.sh
+# /testing_scripts.sh
 
 
 #
