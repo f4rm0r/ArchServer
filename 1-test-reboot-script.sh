@@ -226,24 +226,3 @@ EOF
 #arch-chroot $MOUNTPOINT /home/$username/1-setup.sh
 
 } 2>&1 | tee logfile.txt
-
-
-    
-    
-    
-    # Preparation for reboot
-#	script= "bash /onedrive-setup.sh"
-#
-#
-	# Add this script to .bashrc so it gets triggered immediately after reboot
-#	if [ "${SHELL}" == "/bin/bash"]; then
-#		echo "$script" >> ~/.bashrc
-#
-#	else
-#	       echo "$script" >> ~/.zshrc
-#
-	# Create a flag file to check if we are resuming from reboot
-#	sudo touch /var/run/resume-after-reboot
-#
-#	echo "rebooting..."
-#	sudo /sbin/shutdown -r
