@@ -109,6 +109,16 @@ genfstab -U ${MOUNTPOINT} >> ${MOUNTPOINT}/etc/fstab
 
 echo -ne "
 --------------------------------------------------
+-----------   Setting up bootloader   ------------
+--------------------------------------------------
+
+"
+arch-chroot /mnt "sudo bootctl install && exit"
+
+
+
+echo -ne "
+--------------------------------------------------
 ---------   Setting up reboot script    ----------
 --------------------------------------------------
 
@@ -135,8 +145,8 @@ if [ -f /var/run/rebooting-for-installation ]; then
 
 else
     before_reboot 
-    touch /var/run/rebooting-for-installation
-tee -a /etc/systemd/system/installation.service > /dev/null <<EOT
+    touch /mnt/var/run/rebooting-for-installation
+tee -a /mnt/etc/systemd/system/installation.service > /dev/null <<EOT
 [Unit]
 Description=Remote desktop service (VNC)
 
