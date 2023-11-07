@@ -20,8 +20,9 @@ Installing prereqs...
 pacman -S --noconfirm gptfdisk
 
 echo -ne "
- --------    Select your disk to format    --------
+
  --------------------------------------------------
+ --------    Select your disk to format    --------
  --------------------------------------------------
 "
 
@@ -59,6 +60,7 @@ sgdisk -c 1:"UEFISYS" ${DISK}
 sgdisk -c 2:"ROOT" ${DISK}
 
 # make filesystems
+
 echo -ne "
 
 Creating Filesystems...
@@ -104,7 +106,7 @@ echo -ne "
 --------------------------------------------------
 
 "
-pacstrap ${MOUNTPOINT}/ archlinux-keyring autoconf automake base base-devel binutils dhcpcd dialog dosfstools efibootmgr gcc git grub htop libnewt linux linux-firmware linux-headers nano rsync sudo traceroute ufw vim wget --noconfirm --needed
+pacstrap ${MOUNTPOINT}/ archlinux-keyring autoconf automake base base-devel binutils dhcpcd dialog dosfstools efibootmgr gcc git htop libnewt linux linux-firmware linux-headers nano rsync sudo traceroute ufw vim wget --noconfirm --needed
 genfstab -U ${MOUNTPOINT} >> ${MOUNTPOINT}/etc/fstab
 
 echo -ne "
@@ -129,9 +131,6 @@ cp $0 ${MOUNTPOINT}/root/
 }
 
 after_reboot(){
-
-
-
 
 
 
