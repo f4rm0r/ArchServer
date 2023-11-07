@@ -115,7 +115,8 @@ echo -ne "
 --------------------------------------------------
 
 "
-arch-chroot /mnt "sudo bootctl install && exit"
+arch-chroot /mnt bootctl install
+arch-chroot /mnt useradd -a -G wheel anders
 
 
 
