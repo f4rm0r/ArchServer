@@ -11,12 +11,17 @@ pacman -Syy --noconfirm pacman-contrib reflector rsync archlinux-keyring
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 reflector -a 48 -c $iso -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 
-echo -e "\nInstalling prereqs...\n$HR"
-pacman -S --noconfirm gptfdisk btrfs-progs
+echo -ne "
+Installing prereqs...
+"
+pacman -S --noconfirm gptfdisk
 
-echo "--------------------------------------------------"
-echo "--------    Select your disk to format    --------"
-echo "--------------------------------------------------"
+echo -ne "
+ --------    Select your disk to format    --------
+ --------------------------------------------------
+ --------------------------------------------------
+"
+
 lsblk
 echo "Please enter disk to work on: (example /dev/sda)"
 read DISK
@@ -26,10 +31,13 @@ case $formatdisk in
 
 y|Y|yes|Yes|YES)
 
-echo "--------------------------------------------------"
-echo -e "\nFormatting disk...\n$HR"
-echo "--------------------------------------------------"
+echo -ne "
 
+ --------------------------------------------------
+ Formatting disk...
+ --------------------------------------------------
+
+"
 # disk prep
 sgdisk --zap-all --clear ${DISK} # zap all on disk
 sgdisk -a 2048 -o ${DISK} # new gpt disk 2048 alignment
@@ -46,20 +54,24 @@ sgdisk -t 2:8300 ${DISK}
 # label partitions
 sgdisk -c 1:"UEFISYS" ${DISK}
 sgdisk -c 2:"ROOT" ${DISK}
-wipefs -a -t btrfs ${DISK}2 # removes all of the btrfs signatures and wipe partition clean 
 
 # make filesystems
-echo -e "\nCreating Filesystems...\n$HR"
+echo -ne "
 
+Creating Filesystems...
+
+"
 mkfs.vfat -F32 -n "UEFISYS" "${DISK}1"
-mkfs.btrfs -L "ROOT" "${DISK}2"
+mkfs.ext4 -L "ROOT" "${DISK}2"
 ;;
 esac
 
-echo "--------------------------------------------------"
-echo "-----------------Select mountpoint----------------"
-echo "--------------------------------------------------"
+echo -ne "
+--------------------------------------------------
+-----------------Select mountpoint----------------
+--------------------------------------------------
 
+"
 echo "Please enter mountpoint to mount disks: (Example /mnt"
 read MOUNTPOINT
 echo "THIS WILL DELETE ANY EXISTING DATA IN FOLDER!"
@@ -70,25 +82,27 @@ y|Y|yes|Yes|YES)
 
 mkdir -p ${MOUNTPOINT}
 echo -e "\nMounting filesystems on ${MOUNTPOINT}"
-mount -t btrfs "${DISK}2" ${MOUNTPOINT}
+mount -t ext4 "${DISK}2" ${MOUNTPOINT}
 btrfs subvolume create ${MOUNTPOINT}/@
 umount ${MOUNTPOINT}
 ;;
 esac
 
 #mount target
-mount -t btrfs -o subvol=@ "${DISK}2" ${MOUNTPOINT}
+mount -t ext4 "${DISK}2" ${MOUNTPOINT}
 rm -r ${MOUNTPOINT}/*
 mkdir -p ${MOUNTPOINT}/boot
 mkdir -p ${MOUNTPOINT}/boot/efi
 mount -t vfat "${DISK}1" ${MOUNTPOINT}/boot
 
-echo "--------------------------------------------------"
-echo "-------- Arch Install on Main Drive       --------"
-echo "--------------------------------------------------"
-pacstrap ${MOUNTPOINT}/ archlinux-keyring autoconf automake base base-devel binutils btrfs-progs dhcpcd dialog dosfstools efibootmgr gcc git grub htop libnewt linux linux-lts linux-firmware linux-headers nethogs ncdu nano rsync sudo traceroute ufw vim wget --noconfirm --needed
+echo -ne "
+--------------------------------------------------
+-------- Arch Install on Main Drive       --------
+--------------------------------------------------
+
+"
+pacstrap ${MOUNTPOINT}/ archlinux-keyring autoconf automake base base-devel binutils dhcpcd dialog dosfstools efibootmgr gcc git grub htop libnewt linux linux-firmware linux-headers nano rsync sudo traceroute ufw vim wget --noconfirm --needed
 genfstab -U ${MOUNTPOINT} >> ${MOUNTPOINT}/etc/fstab
-echo "keyserver hkp://keyserver.ubuntu.com" >> /mnt/etc/pacman.d/gnupg/gpg.conf
 
 echo "--------------------------------------------------"
 echo "---  Setting key variables used during chroot  ---"
